@@ -1,0 +1,77 @@
+/*** User pages ***/
+// -------
+.users-avatar-shadow {
+  box-shadow: 2px 4px 14px 0 rgba(34, 41, 47, 0.4);
+}
+
+// aggrid actions dropdown
+.actions-dropdown {
+  .btn-group .btn {
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.14) !important;
+    border-radius: 0.5rem !important;
+  }
+}
+// date picker width
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+input.customcheckbox {
+  margin-top: 13px;
+  width: 36px;
+  height: 21px;
+}
+// User view Table
+.permissions-table {
+  td,
+  th {
+    padding: 0.5rem;
+  }
+}
+
+// User view info
+.users-page-view-table .user-info {
+  div {
+    padding: 0.5rem;
+  }
+  .user-info-title {
+    font-size: 16px;
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ag-grid-table {
+    .ag-paging-panel {
+      height: 160px;
+    }
+    .sort-dropdown {
+      margin-bottom: 1rem;
+    }
+  }
+}
+input.addinarray {
+  /* border: 1px solid black; */
+  width: 30px;
+  height: 19px;
+}
+
+.dispatched {
+  padding: 164px 45px;
+}
+// Button[title] {
+//   color: purple;
+// }
+// .custom-button::before {
+//   content: attr(title); /* Set the content to the title attribute value */
+//   background-color: black; /* Example background color */
+//   color: white; /* Example text color */
+//   padding: 5px;
+//   position: absolute;
+//   z-index: 1;
+//   top: -30px; /* Adjust the distance from the button */
+//   left: 50%; /* Position at the center of the button */
+//   transform: translateX(-50%);
+//   opacity: 0; /* Initially hide the tooltip */
+//   transition: opacity 0.3s ease;
+// }
