@@ -1,14 +1,14 @@
-import React from "react"
+import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
   UncontrolledButtonDropdown,
   DropdownMenu,
   DropdownItem,
-  DropdownToggle
-} from "reactstrap"
-import { Home, Settings } from "react-feather"
-import { NavLink } from "react-router-dom"
+  DropdownToggle,
+} from "reactstrap";
+import { Home, Settings } from "react-feather";
+import { NavLink } from "react-router-dom";
 class BreadCrumbs extends React.Component {
   render() {
     return (
@@ -55,7 +55,7 @@ class BreadCrumbs extends React.Component {
             </div>
           </div>
         </div>
-        <div className="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
+        {/* <div className="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
           <div className="form-group breadcrum-right dropdown">
             <UncontrolledButtonDropdown>
               <DropdownToggle
@@ -66,7 +66,7 @@ class BreadCrumbs extends React.Component {
                 <Settings
                   size={14}
                   style={{
-                    left: 0
+                    left: 0,
                   }}
                 />
               </DropdownToggle>
@@ -89,9 +89,9 @@ class BreadCrumbs extends React.Component {
               </DropdownMenu>
             </UncontrolledButtonDropdown>
           </div>
-        </div>
+        </div> */}
       </div>
-    )
+    );
   }
 }
-export default BreadCrumbs
+export default BreadCrumbs;

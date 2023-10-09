@@ -549,7 +549,6 @@ class Selectedorder extends React.Component {
           }
         })
         .catch((err) => {
-          // console.log(err.response?.data?.message);
           if (err.response?.data?.message) {
             swal("Error", `${err.response?.data?.message}`);
           }

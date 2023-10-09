@@ -473,7 +473,7 @@ class NavbarUser extends React.PureComponent {
             <div className="user-nav d-sm-flex d-none">
               <span className="user-name text-bold-600">
                 {pageparmission?.Userinfo.full_name}
-                {/* {userData.name === undefined ? userData.name : null} */}
+                {/* <div>{pageparmission?.Userinfo?.role}</div> */}
               </span>
               {/* <span className="user-status">{this.state.userData.name}</span> */}
             </div>
