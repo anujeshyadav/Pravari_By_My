@@ -25,9 +25,10 @@ import LoginFirebase from "./LoginFirebase";
 import LoginJWT from "./LoginJWT";
 import { connect } from "react-redux";
 // import UserContext from "../../../../context/Context";
-
+import OtpInput from "react-otp-input";
 import swal from "sweetalert";
 import axiosConfig from "../../../../axiosConfig";
+import { AcroChoiceFlags } from "pdf-lib";
 
 class Login extends React.Component {
   // static contextType = UserContext;
@@ -38,7 +39,11 @@ class Login extends React.Component {
     this.state = {
       email: "",
       password: "",
+      Confirmpassword: "",
+      emailotp: "",
       resetpassword: false,
+      ShowOTPScreen: false,
+      ShowResetPasswordScreen: false,
       // rowData: {},
     };
   }
@@ -66,7 +71,6 @@ class Login extends React.Component {
           swal(
             "Sucessfully login",
             "You are LoggedIn!",
-            "Success",
 
             {
               buttons: {
@@ -96,24 +100,67 @@ class Login extends React.Component {
   };
   changepassword = (e) => {
     e.preventDefault();
-    debugger;
     let formdata = new FormData();
     formdata.append("email", this.state.email);
-    formdata.append("base_url", "this.state.password");
-    // console.log(this.state.email);
-    // console.log(this.state.password);
     axiosConfig
-      .post("/forgetPasswordEmailVerify", formdata)
+      .post("/forgotpasswordd", formdata)
       .then((res) => {
-        console.log(res);
-        this.setState({ resetpassword: false });
-        swal("Email has been sent to Your Mail id", "Please Check and verify");
+        // console.log(res?.data?.success);
+        if (res?.data?.success) {
+          // this.setState({ resetpassword: false });
+          this.setState({ ShowOTPScreen: true });
+          swal(
+            "Email has been sent to Your Mail id",
+            "Please Check and Verify"
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  HandleSubmitOTP = (e) => {
+    e.preventDefault();
+    console.log(this.state.emailotp);
+    console.log(this.state.email);
+    let formdata = new FormData();
+    formdata.append("otp", this.state.emailotp);
+    formdata.append("email", this.state.email);
+    axiosConfig
+      .post("/verify_Forgot_otp", formdata)
+      .then((res) => {
+        console.log(res.data?.success);
+        if (res.data?.success) {
+          swal("OTP has been Verified");
+          this.setState({ ShowResetPasswordScreen: true });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  PasswordRestSubmit = (e) => {
+    e.preventDefault();
 
+    console.log(this.state.password);
+    console.log(this.state.Confirmpassword);
+    let formdata = new FormData();
+    formdata.append("email", this.state.email);
+    formdata.append("password", this.state.password);
+    formdata.append("cpassword", this.state.Confirmpassword);
+    axiosConfig
+      .post("/change_forgot_password", formdata)
+      .then((res) => {
+        console.log(res);
+        if (res?.data.success) {
+          swal("Your Password Changed Successfully");
+          this.setState({ resetpassword: false });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   render() {
     return (
       <Container>
@@ -133,7 +180,7 @@ class Login extends React.Component {
                       <img
                         src={logo}
                         alt="loginImg"
-                        width="210px"
+                        width="100%"
                         height="150px"
                       />
                     </div>
@@ -150,24 +197,101 @@ class Login extends React.Component {
                         <p className="px-2 auth-title mb-2">
                           Welcome , Please Enter details.
                         </p>
-                        <Form onSubmit={this.changepassword}>
-                          <Label>Email</Label>
-                          <FormGroup className="form-label-group position-relative has-icon-left">
-                            <Input
-                              type="email"
-                              name="email"
-                              placeholder="Username"
-                              value={this.state.email}
-                              onChange={this.handlechange}
-                              // required
-                            />
-                          </FormGroup>
-                          <div className="d-flex justify-content-center">
-                            <Button.Ripple color="primary" type="submit">
-                              Submit
-                            </Button.Ripple>
-                          </div>
-                        </Form>
+
+                        {this.state.ShowOTPScreen ? (
+                          <>
+                            {this.state.ShowResetPasswordScreen ? (
+                              <>
+                                <Form onSubmit={this.PasswordRestSubmit}>
+                                  <Label>Password</Label>
+                                  <FormGroup className="form-label-group position-relative has-icon-left">
+                                    <Input
+                                      type="password"
+                                      name="password"
+                                      placeholder="Password..."
+                                      value={this.state.password}
+                                      onChange={this.handlechange}
+                                      required
+                                    />
+                                  </FormGroup>
+
+                                  <Label>Confirm Password</Label>
+                                  <FormGroup className="form-label-group position-relative has-icon-left">
+                                    <Input
+                                      type="password"
+                                      name="Confirmpassword"
+                                      placeholder="confirm Password"
+                                      value={this.state.Confirmpassword}
+                                      onChange={this.handlechange}
+                                      required
+                                    />
+                                  </FormGroup>
+
+                                  <div className="d-flex justify-content-between">
+                                    <Button.Ripple
+                                      color="primary"
+                                      type="submit"
+                                    >
+                                      Submit
+                                    </Button.Ripple>
+                                  </div>
+                                </Form>
+                              </>
+                            ) : (
+                              <>
+                                <Form onSubmit={this.HandleSubmitOTP}>
+                                  <p className="px-2 auth-title">Email OTP</p>
+                                  <div className="d-flex justify-content-center mb-2">
+                                    <OtpInput
+                                      containerStyle="true inputdata"
+                                      inputStyle="true inputdataone"
+                                      className="otpinputtype"
+                                      value={this.state.emailotp}
+                                      name="emailotp"
+                                      onChange={(otp) =>
+                                        this.setState({ emailotp: otp })
+                                      }
+                                      numInputs={6}
+                                      renderSeparator={<span>-</span>}
+                                      renderInput={(props) => (
+                                        <input className="inputs" {...props} />
+                                      )}
+                                    />
+                                  </div>
+                                  <div className="d-flex justify-content-center">
+                                    <Button.Ripple
+                                      color="primary"
+                                      type="submit"
+                                    >
+                                      Submit
+                                    </Button.Ripple>
+                                  </div>
+                                </Form>
+                              </>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <Form onSubmit={this.changepassword}>
+                              <Label>Email</Label>
+                              <FormGroup className="form-label-group position-relative has-icon-left">
+                                <Input
+                                  type="email"
+                                  name="email"
+                                  placeholder="Username"
+                                  value={this.state.email}
+                                  onChange={this.handlechange}
+                                  // required
+                                />
+                              </FormGroup>
+                              <div className="d-flex justify-content-center">
+                                <Button.Ripple color="primary" type="submit">
+                                  Submit
+                                </Button.Ripple>
+                              </div>
+                            </Form>
+                          </>
+                        )}
                       </>
                     ) : (
                       <>
