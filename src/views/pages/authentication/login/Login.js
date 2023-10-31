@@ -16,8 +16,8 @@ import {
 } from "reactstrap";
 // import classnames from "classnames";
 // import logo from "../../../../assets/img/logo/logo.ico";
-import logo from "../../../../assets/img/logo/paravilogo.jpeg";
-//import loginImg from "../../../../assets/img/pages/login.png";
+// import logo from "../../../../assets/img/logo/paravilogo.jpeg";
+import logo from "../../../../assets/img/logo/pravarilogonobackground.png";
 import "../../../../assets/scss/pages/authentication.scss";
 import { history } from "../../../../history";
 import LoginAuth0 from "./LoginAuth0";
@@ -137,6 +137,7 @@ class Login extends React.Component {
       })
       .catch((err) => {
         console.log(err);
+        swal("OTP has not been verified");
       });
   };
   PasswordRestSubmit = (e) => {
@@ -181,7 +182,7 @@ class Login extends React.Component {
                         src={logo}
                         alt="loginImg"
                         width="100%"
-                        height="150px"
+                        height="90px"
                       />
                     </div>
 
@@ -306,12 +307,12 @@ class Login extends React.Component {
                           Welcome back, Please login to your account.
                         </p>
                         <Form onSubmit={this.loginHandler}>
-                          <Label>UserName</Label>
+                          <Label>UserName/Display code/ Email id</Label>
                           <FormGroup className="form-label-group position-relative has-icon-left">
                             <Input
                               type="text"
                               name="email"
-                              placeholder="Username"
+                              placeholder="Enter Details..."
                               value={this.state.email}
                               onChange={this.handlechange}
                               // required

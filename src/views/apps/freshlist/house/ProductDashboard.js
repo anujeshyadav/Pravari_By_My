@@ -64,6 +64,7 @@ class ProductDashboard extends React.Component {
         filter: "agSetColumnFilter",
         width: 140,
         cellRendererFramework: (params) => {
+          console.log(params?.data?.product_images);
           return (
             <div className="d-flex align-items-center cursor-pointer">
               <div className="">

@@ -10,12 +10,8 @@ import {
   DropdownItem,
   DropdownToggle,
   Button,
-  CardTitle,
-  CardText,
-  Label,
   FormGroup,
 } from "reactstrap";
-import axios from "axios";
 import axiosConfig from "../../../../axiosConfig";
 import ReactHtmlParser from "react-html-parser";
 import { ContextLayout } from "../../../../utility/context/Layout";
@@ -33,6 +29,7 @@ import { Route } from "react-router-dom";
 import { timers } from "jquery";
 import swal from "sweetalert";
 import { BsFillCartCheckFill } from "react-icons/bs";
+import { Placeorderfunction } from "./Placeorderfunction";
 
 class Placeorder extends React.Component {
   state = {
@@ -201,10 +198,11 @@ class Placeorder extends React.Component {
       // },
       {
         headerName: "Quantity",
-        field: "Quantity",
-        filter: "agSetColumnFilter",
+        field: "",
+        // filter: "agSetColumnFilter",
         width: 260,
         cellRendererFramework: (params) => {
+          console.log(params);
           return (
             <div className="d-flex align-items-center cursor-pointer">
               <div className="d-flex">
@@ -481,6 +479,7 @@ class Placeorder extends React.Component {
         .post(`/add_to_cart`, formdata)
         .then((res) => {
           this.setState({ ProductQuantity: "" });
+          this.setState({ rowData: this.state.rowData });
           toast.success(`${this.state.ProductQuantity} Product Added`);
           // this.componentDidMount();
           axiosConfig
@@ -544,22 +543,13 @@ class Placeorder extends React.Component {
     return (
       <>
         <ToastContainer />
-        {/* <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        /> */}
 
         <Row className="app-user-list">
           <Col sm="12">
             <Card>
+              <Row>
+                <Col>{/* <Placeorderfunction /> */}</Col>
+              </Row>
               <Row className="m-2">
                 <Col>
                   <h1 col-sm-6 className="float-left">
@@ -630,6 +620,12 @@ class Placeorder extends React.Component {
                             <ChevronDown className="ml-50" size={15} />
                           </DropdownToggle>
                           <DropdownMenu right>
+                            <DropdownItem
+                              tag="div"
+                              onClick={() => this.filterSize(5)}
+                            >
+                              5
+                            </DropdownItem>
                             <DropdownItem
                               tag="div"
                               onClick={() => this.filterSize(20)}
