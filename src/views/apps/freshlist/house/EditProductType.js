@@ -34,7 +34,6 @@ export class EditProductType extends Component {
       StateList: [],
       SelectedSupplierCity: [],
       SelectedSCity: [],
-
       CityList: [],
       CityList1: [],
 
