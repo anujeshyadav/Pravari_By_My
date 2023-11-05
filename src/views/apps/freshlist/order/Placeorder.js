@@ -33,7 +33,7 @@ import { Placeorderfunction } from "./Placeorderfunction";
 
 class Placeorder extends React.Component {
   state = {
-    ProductQuantity: "",
+    ProductQuantity: 0,
     product: [],
     rowData: [],
     Typelist: [],
@@ -60,38 +60,8 @@ class Placeorder extends React.Component {
         headerName: "UID",
         valueGetter: "node.rowIndex + 1",
         field: "node.rowIndex + 1",
-        // checkboxSelection: true,
         width: 80,
         filter: true,
-        // cellRendererFramework: (params) => {
-        //   return (
-        //     <div className="d-flex align-items-center cursor-pointer">
-        //       <div className="">
-        //         <input
-        //           className="addinarray"
-        //           onClick={(e) => {
-        //             console.log(e.target.checked);
-        //             if (e.target.checked) {
-        //               console.log(this.state.SelectedProduct);
-        //               this.setState({
-        //                 SelectedProduct: this.state.SelectedProduct.concat(
-        //                   params?.data
-        //                 ),
-        //               });
-        //             } else {
-        //               let data = this.state.SelectedProduct.filter((ele, i) => {
-        //                 if (ele?.id === params?.data?.id) {
-        //                   this.state.SelectedProduct.splice(i, 1);
-        //                 }
-        //               });
-        //             }
-        //           }}
-        //           type="checkbox"
-        //         />
-        //       </div>
-        //     </div>
-        //   );
-        // },
       },
 
       {
@@ -103,7 +73,6 @@ class Placeorder extends React.Component {
           return (
             <div className="d-flex align-items-center cursor-pointer">
               <div className="">
-                {/* <span>{params.data?.title}</span> */}
                 {params?.data?.product_images ? (
                   <img
                     style={{ borderRadius: "12px" }}
@@ -166,48 +135,21 @@ class Placeorder extends React.Component {
         },
       },
 
-      // {
-      //   headerName: "CATEGORY",
-      //   field: "category_name",
-      //   filter: "agSetColumnFilter",
-      //   width: 150,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{params.data?.category_name}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "Description",
-      //   field: "description",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{ReactHtmlParser(params.data?.description)}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
       {
         headerName: "Quantity",
         field: "",
-        // filter: "agSetColumnFilter",
+        filter: "agSetColumnFilter",
         width: 260,
+        // cellEditorParams: {
+        //   value: this.state.ProductQuantity, // Pass the initial value
+        // },
         cellRendererFramework: (params) => {
           console.log(params);
           return (
             <div className="d-flex align-items-center cursor-pointer">
               <div className="d-flex">
-                {/* <Button color="primary">-</Button> */}
                 <input
+                  id="inputvalue"
                   style={{ position: "relative" }}
                   // value={this.state.ProductQuantity}
                   onChange={(e) => {
@@ -218,11 +160,6 @@ class Placeorder extends React.Component {
                 />
 
                 <Button
-                  // disabled={
-                  //   this.state.ProductQuantity && this.state.ProductQuantity > 0
-                  //     ? false
-                  //     : true
-                  // }
                   onClick={(e) => {
                     this.handleAddToCart(e, params?.data);
                   }}
@@ -235,7 +172,8 @@ class Placeorder extends React.Component {
                     padding: "12px",
                   }}
                 >
-                  Add {this.state.ProductQuantity && this.state.ProductQuantity}
+                  Add
+                  {/* {this.state.ProductQuantity && this.state.ProductQuantity} */}
                 </Button>
               </div>
             </div>
@@ -257,114 +195,7 @@ class Placeorder extends React.Component {
           );
         },
       },
-      // {
-      //   headerName: "DiscountPrice",
-      //   field: "discountprice",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{params.data?.discountprice}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "Shipping Fee",
-      //   field: "shipping_fee",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{params.data?.shipping_fee}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "Tax Rate",
-      //   field: "tax_rate",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{params.data?.tax_rate}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "Tags",
-      //   field: "tags",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{params.data?.tags}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "STOCK",
-      //   field: "stock",
 
-      //   filter: "agSetColumnFilter",
-      //   width: 150,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{ReactHtmlParser(params.data?.stock)}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "Created ",
-      //   field: "created_date",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>
-      //             {ReactHtmlParser(params.data?.created_date?.split(" ")[0])}
-      //           </span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
-      // {
-      //   headerName: "SALES",
-      //   field: "pisces",
-      //   filter: "agSetColumnFilter",
-      //   width: 120,
-      //   cellRendererFramework: (params) => {
-      //     return (
-      //       <div className="d-flex align-items-center cursor-pointer">
-      //         <div className="">
-      //           <span>{ReactHtmlParser(params.data.pisces)}</span>
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
       // {
       //   headerName: "Actions",
       //   field: "transactions",
@@ -468,6 +299,8 @@ class Placeorder extends React.Component {
   }
   handleAddToCart = (e, data) => {
     e.preventDefault();
+    let value = document.getElementById("inputvalue").value;
+
     let pageparmission = JSON.parse(localStorage.getItem("userData"));
     const formdata = new FormData();
     formdata.append("qty", this.state.ProductQuantity);
@@ -481,7 +314,7 @@ class Placeorder extends React.Component {
           this.setState({ ProductQuantity: "" });
           this.setState({ rowData: this.state.rowData });
           toast.success(`${this.state.ProductQuantity} Product Added`);
-          // this.componentDidMount();
+          let newvalue = (document.getElementById("inputvalue").value = 0);
           axiosConfig
             .post(`/viewcart`, formdata)
             .then((res) => {

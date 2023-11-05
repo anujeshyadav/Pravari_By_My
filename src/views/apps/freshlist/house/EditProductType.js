@@ -36,6 +36,7 @@ export class EditProductType extends Component {
       SelectedSCity: [],
 
       CityList: [],
+      CityList1: [],
 
       S_City: "",
       Mobile_no: "",
@@ -84,13 +85,17 @@ export class EditProductType extends Component {
           this.setState({ checkbox: true });
         }
         const formdata = new FormData();
-        formdata.append("state_id", response.data.data.state_id);
+        formdata.append("state_id", response.data.data?.state_id);
+        debugger;
         axiosConfig
           .post(`/getcity`, formdata)
           .then((res) => {
             console.log(res?.data?.cities);
-            newdata = res?.data?.cities?.filter((ele) => {
+            let newdata = res?.data?.cities?.filter((ele) => {
+              // console.log(myArray);
+              // console.log(ele?.id);
               if (myArray.includes(ele?.id)) {
+                debugger;
                 return ele;
               }
             });
@@ -102,22 +107,23 @@ export class EditProductType extends Component {
           .catch((err) => {
             console.log(err);
           });
-        formdata.append("state_id", response.data.data.billing_state);
+        const data = new FormData();
+
+        data.append("state_id", response.data.data.billing_state);
         axiosConfig
-          .post(`/getcity`, formdata)
+          .post(`/getcity`, data)
           .then((res) => {
-            // console.log(res?.data?.cities);
             this.setState({ CityList: res?.data?.cities });
           })
           .catch((err) => {
             console.log(err);
           });
-        formdata.append("state_id", response.data.data.shipping_state);
+        const form = new FormData();
+        form.append("state_id", response.data.data?.shipping_state);
         axiosConfig
-          .post(`/getcity`, formdata)
+          .post(`/getcity`, form)
           .then((res) => {
-            // console.log(res?.data?.cities);
-            this.setState({ CityList: res?.data?.cities });
+            this.setState({ CityList1: res?.data?.cities });
           })
           .catch((err) => {
             console.log(err);
@@ -661,8 +667,7 @@ export class EditProductType extends Component {
                             axiosConfig
                               .post(`/getcity`, formdata)
                               .then((res) => {
-                                console.log(res?.data?.cities);
-                                this.setState({ CityList: res?.data?.cities });
+                                this.setState({ CityList1: res?.data?.cities });
                               })
                               .catch((err) => {
                                 console.log(err);
@@ -693,8 +698,8 @@ export class EditProductType extends Component {
                             className="form-control"
                           >
                             <option value="volvo">--Select City--</option>
-                            {this.state.CityList &&
-                              this.state.CityList?.map((value, index) => (
+                            {this.state.CityList1 &&
+                              this.state.CityList1?.map((value, index) => (
                                 <option key={index} value={value?.id}>
                                   {value?.name}
                                 </option>

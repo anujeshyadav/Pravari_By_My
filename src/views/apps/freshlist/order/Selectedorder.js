@@ -378,8 +378,6 @@ class Selectedorder extends React.Component {
                   color="Red"
                   onClick={() => {
                     this.runthisfunction(params?.data?.cart_id);
-                    let selectedData = this.gridApi.getSelectedRows();
-                    this.gridApi.updateRowData({ remove: selectedData });
                   }}
                 />
               )}
@@ -437,10 +435,13 @@ class Selectedorder extends React.Component {
     // console.log(pageparmission);
 
     const formdata = new FormData();
+
     let cityid = pageparmission?.Userinfo?.city_id;
     let stateid = pageparmission?.Userinfo?.state_id;
     formdata.append("city_id", cityid);
     formdata.append("state_id", stateid);
+    formdata.append("user_id", pageparmission?.Userinfo?.id);
+
     if (cityid && stateid) {
       await axiosConfig
         .post("/getsupplierfororder", formdata)
@@ -465,7 +466,6 @@ class Selectedorder extends React.Component {
   async runthisfunction(id) {
     let pageparmission = JSON.parse(localStorage.getItem("userData"));
 
-    console.log(id);
     let data = new FormData();
     data.append("user_id", pageparmission?.Userinfo?.id);
     data.append("cart_id", id);
@@ -473,8 +473,8 @@ class Selectedorder extends React.Component {
     await axiosConfig
       .post("/deleteitemcart", data)
       .then((resp) => {
-        console.log(resp.data);
-
+        let selectedData = this.gridApi.getSelectedRows();
+        this.gridApi.updateRowData({ remove: selectedData });
         if (resp?.data?.success) {
           toast.success(`Product Deleted`);
           this.handleviewcart();

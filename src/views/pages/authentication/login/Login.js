@@ -62,6 +62,8 @@ class Login extends React.Component {
     axiosConfig
       .post("/usersign", fromdata)
       .then((response) => {
+        debugger;
+        console.log(response);
         let msg = response.data?.success;
         if (msg) {
           localStorage.setItem("userData", JSON.stringify(response.data?.data));
@@ -89,7 +91,7 @@ class Login extends React.Component {
         }
       })
       .catch((error) => {
-        // console.log(error.response?.data.success);
+        console.log(error.response);
         let msg = error.response?.data.success;
 
         if (!msg) {
