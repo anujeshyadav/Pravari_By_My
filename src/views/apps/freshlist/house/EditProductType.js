@@ -17,6 +17,7 @@ import { history } from "../../../../history";
 import axiosConfig from "../../../../axiosConfig";
 import { Route } from "react-router-dom";
 import swal from "sweetalert";
+import { EditCity } from "./EditCity";
 
 const selectItem1 = [];
 
@@ -62,6 +63,7 @@ export class EditProductType extends Component {
       City: "",
       Role: "",
       viewData: [],
+      selectedcities: [],
       rolesList: [],
     };
   }
@@ -85,7 +87,6 @@ export class EditProductType extends Component {
         }
         const formdata = new FormData();
         formdata.append("state_id", response.data.data?.state_id);
-        debugger;
         axiosConfig
           .post(`/getcity`, formdata)
           .then((res) => {
@@ -94,11 +95,10 @@ export class EditProductType extends Component {
               // console.log(myArray);
               // console.log(ele?.id);
               if (myArray.includes(ele?.id)) {
-                debugger;
                 return ele;
               }
             });
-            console.log(newdata);
+            // console.log(newdata);
             this.setState({ SelectedSupplierCity: newdata });
             this.setState({ selectedValue: newdata });
             this.setState({ CityList: res?.data?.cities });
@@ -185,6 +185,12 @@ export class EditProductType extends Component {
         console.log(error);
       });
   }
+  receiveDataFromChild = (data) => {
+    // Handle the data received from the child component
+    // setReceivedData(data);
+    console.log(data);
+    this.setState({ selectedcities: data });
+  };
 
   handlerStatus = (e) => {
     console.log(e.target.value);
@@ -205,7 +211,13 @@ export class EditProductType extends Component {
     let { id } = this.props.match.params;
     e.preventDefault();
     const formdata = new FormData();
-    let uniqueChars = [...new Set(selectItem1)];
+    // console.log(this.state.selectedcities);
+    let cityid = this.state.selectedcities?.map((ele) => {
+      return ele?.id;
+    });
+    // console.log(cityid);
+    // debugger;
+    // let uniqueChars = [...new Set(selectItem1)];
     formdata.append("id", id);
     formdata.append("password", this.state.password);
     formdata.append("full_name", this.state.fullname);
@@ -231,7 +243,7 @@ export class EditProductType extends Component {
     formdata.append("shipping_pincode", this.state.S_PinCode);
     formdata.append("phone_no", this.state.Phone_no);
     formdata.append("state_id", this.state.SelectedState);
-    formdata.append("city_id", uniqueChars);
+    formdata.append("city_id", cityid);
 
     axiosConfig
       .post("/usereditsubmit", formdata)
@@ -469,7 +481,9 @@ export class EditProductType extends Component {
                           axiosConfig
                             .post(`/getcity`, formdata)
                             .then((res) => {
-                              console.log(res?.data?.cities);
+                              this.setState({ SelectedSupplierCity: "" });
+                              this.setState({ selectedValue: "" });
+
                               this.setState({ CityList: res?.data?.cities });
                             })
                             .catch((err) => {
@@ -491,7 +505,14 @@ export class EditProductType extends Component {
                   </Col>
                   <Col lg="6" md="6">
                     <label for="cars">Choose City</label>
-                    <Multiselect
+                    <EditCity
+                      city={this.state.CityList}
+                      selected={this.state.selectedValue}
+                      SelectedSupplierCity={this.state.SelectedSupplierCity}
+                      // Received={Received}
+                      sendDataToParent={this.receiveDataFromChild}
+                    />
+                    {/* <Multiselect
                       options={this.state.CityList} // Options to display in the dropdown
                       selectedValues={
                         this.state.selectedValue ||
@@ -500,7 +521,7 @@ export class EditProductType extends Component {
                       onSelect={this.onSelect} // Function will trigger on select event
                       onRemove={this.onRemove} // Function will trigger on remove event
                       displayValue="name" // Property name to display in the dropdown options
-                    />
+                    /> */}
                   </Col>
                 </Row>
                 <hr />

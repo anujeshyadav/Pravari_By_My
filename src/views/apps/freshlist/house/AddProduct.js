@@ -186,7 +186,7 @@ export class AddProduct extends Component {
         console.log(response);
         if (response.data.success) {
           swal("Success!", "You Data is been Submitted", "success");
-          // this.props.history.push("/app/freshlist/category/categoryList");
+          this.props.history.push("/app/freshlist/house/ProductDashboard");
         }
       })
       .catch((error) => {

@@ -131,14 +131,18 @@ class AssignedCLientlist extends React.Component {
           headerName: "Products",
           field: "products",
           filter: "agSetColumnFilter",
-          width: 190,
+          width: 200,
           cellRendererFramework: (params) => {
             return (
               <div className="d-flex flex-wrap">
                 {params?.data?.products &&
-                  params?.data?.products?.map((ele, i) => (
-                    <span key={i}>{ele?.title},</span>
-                  ))}
+                  params?.data?.products?.map((ele, i) => {
+                    if (params.data?.products.length > 1) {
+                      return <span key={i}>{ele?.title}, &nbsp;</span>;
+                    } else {
+                      return <span key={i}>{ele?.title}</span>;
+                    }
+                  })}
               </div>
             );
           },

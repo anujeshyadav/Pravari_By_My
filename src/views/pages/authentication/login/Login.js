@@ -62,7 +62,6 @@ class Login extends React.Component {
     axiosConfig
       .post("/usersign", fromdata)
       .then((response) => {
-        debugger;
         console.log(response);
         let msg = response.data?.success;
         if (msg) {
