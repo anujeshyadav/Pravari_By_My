@@ -21,13 +21,8 @@ export const EditCity = ({
     console.log(removedOption);
     setSelectedCity(removedOption);
     sendDataToParent(removedOption);
-
-    // Implement your onRemove logic here
-    // You can update the selectedValues state or perform any other actions
   };
-  //   useEffect(() => {
-  //   props.Received
-  //   }, [SelectedCity])
+
   return (
     <div>
       <Multiselect
