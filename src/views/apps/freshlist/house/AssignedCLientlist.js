@@ -384,8 +384,6 @@ class AssignedCLientlist extends React.Component {
                     color="Red"
                     onClick={() => {
                       this.runthisfunction(params?.data?.cart_id);
-                      let selectedData = this.gridApi.getSelectedRows();
-                      this.gridApi.updateRowData({ remove: selectedData });
                     }}
                   />
                 )}
@@ -458,7 +456,8 @@ class AssignedCLientlist extends React.Component {
       .post("/deleteitemcart", data)
       .then((resp) => {
         console.log(resp.data);
-
+        let selectedData = this.gridApi.getSelectedRows();
+        this.gridApi.updateRowData({ remove: selectedData });
         if (resp?.data?.success) {
           toast.success(`Product Deleted`);
           //   this.handleviewcart();

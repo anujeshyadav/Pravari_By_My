@@ -847,27 +847,27 @@ const AssignToClient = () => {
     let pageparmission = JSON.parse(localStorage.getItem("userData"));
     formdata.append("user_id", pageparmission?.Userinfo?.id);
     formdata.append("role", pageparmission?.Userinfo?.role);
-    // formdata.append("category_id", category);
-    // formdata.append("brand_id", Brand);
-    // formdata.append("product_type_id", Type);
+
     formdata.append("product_id", JSON.stringify(Product));
     formdata.append("assign_user_id", Clientname);
-    // formdata.append("qty", quantity);
-
-    axiosConfig
-      .post(`/assign_to_client`, formdata)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data?.success) {
-          swal("Product Assigned Successfully");
-          window.location.reload();
-          setProduct("");
-          setClientname("");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (Clientname) {
+      axiosConfig
+        .post(`/assign_to_client`, formdata)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data?.success) {
+            swal("Product Assigned Successfully");
+            window.location.reload();
+            setProduct("");
+            setClientname("");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      swal("Please fill all details");
+    }
   };
   const onSelect = (selectedList, selectedItem) => {
     // setProduct(e.target.value)
@@ -917,6 +917,7 @@ const AssignToClient = () => {
                       <Label>Product List</Label>
 
                       <Multiselect
+                        required
                         // className="form-control"
                         options={ProductListData} // Options to display in the dropdown
                         // selectedValues={selectedValue} // Preselected value to persist in dropdown
