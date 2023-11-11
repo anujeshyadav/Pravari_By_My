@@ -167,8 +167,8 @@ export class EditInventory extends Component {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          swal("Success!", "You Data iS been Submitted", "success");
           this.props.history.push("/app/freshlist/house/inventory");
+          swal("Success!", "You Data iS been Submitted", "Success");
         }
       })
       .catch((error) => {
@@ -226,12 +226,25 @@ export class EditInventory extends Component {
                   <FormGroup>
                     <Label> Quantity </Label>
                     <Input
-                      type="number"
+                      onWheel={(e) => {
+                        e.preventDefault(); // Prevent the mouse wheel scroll event
+                      }}
+                      type="text"
+                      onKeyDown={(e) =>
+                        ["e", "E", "+", "-"].includes(e.key) &&
+                        e.preventDefault()
+                      }
                       placeholder="Quantity In Number"
                       name="stock"
                       bsSize="lg"
                       value={this.state.stock}
-                      onChange={this.changeHandler}
+                      // onChange={this.changeHandler}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+                        this.setState({ stock: numericValue });
+                      }}
                     />
                   </FormGroup>
                 </Col>

@@ -18,6 +18,7 @@ import axiosConfig from "../../../../axiosConfig";
 import { Route } from "react-router-dom";
 import swal from "sweetalert";
 import { EditCity } from "./EditCity";
+import State from "./State";
 
 const selectItem1 = [];
 
@@ -31,6 +32,7 @@ export class EditProductType extends Component {
       GSTIN: "",
       B_City: "",
       checkbox: "",
+      selectedStatelist: [],
       SelectedState: "",
       StateList: [],
       SelectedSupplierCity: [],
@@ -71,17 +73,21 @@ export class EditProductType extends Component {
     let { id } = this.props.match.params;
     const data = new FormData();
     data.append("user_id", id);
+    let selectedState;
     await axiosConfig
       .post("/usereditview", data)
       .then((response) => {
-        console.log(response.data.data);
-        // console.log(response.data.data?.city_id);
+        // console.log(response.data.data);
+
+        // console.log(response.data.data?.state_id);
+        selectedState = response.data.data?.state_id?.split(",");
+        // console.log(selectedState);
         let myArray;
         let newdata;
         if (response.data.data?.city_id) {
           myArray = response.data.data?.city_id.split(",");
         }
-        console.log(myArray);
+        // console.log(myArray);
         if (this.state.B_Street === this.state.S_Street) {
           this.setState({ checkbox: true });
         }
@@ -90,7 +96,7 @@ export class EditProductType extends Component {
         axiosConfig
           .post(`/getcity`, formdata)
           .then((res) => {
-            console.log(res?.data?.cities);
+            // console.log(res?.data?.cities);
             let newdata = res?.data?.cities?.filter((ele) => {
               // console.log(myArray);
               // console.log(ele?.id);
@@ -162,6 +168,15 @@ export class EditProductType extends Component {
     await axiosConfig
       .get("/getallstates")
       .then((response) => {
+        console.log(response);
+        // debugger;
+        let newstate = response.data?.states?.filter((ele) => {
+          if (selectedState?.includes(ele?.id)) {
+            return ele;
+          }
+        });
+        console.log(newstate);
+        this.setState({ selectedStatelist: newstate });
         this.setState({
           StateList: response.data?.states,
         });
@@ -191,6 +206,17 @@ export class EditProductType extends Component {
     console.log(data);
     this.setState({ selectedcities: data });
   };
+  receiveDataFromChildstate = (data) => {
+    // Handle the data received from the child component
+    // setReceivedData(data);
+    console.log(data);
+    this.setState({ selectedStatelist: data });
+    let stateid = data?.map((ele) => {
+      return ele?.id;
+    });
+    console.log(stateid);
+    this.setState({ SelectedState: stateid });
+  };
 
   handlerStatus = (e) => {
     console.log(e.target.value);
@@ -215,8 +241,7 @@ export class EditProductType extends Component {
     let cityid = this.state.selectedcities?.map((ele) => {
       return ele?.id;
     });
-    // console.log(cityid);
-    // debugger;
+
     // let uniqueChars = [...new Set(selectItem1)];
     formdata.append("id", id);
     formdata.append("password", this.state.password);
@@ -248,7 +273,7 @@ export class EditProductType extends Component {
     axiosConfig
       .post("/usereditsubmit", formdata)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // this.setState({EditData:response.data.data})
         swal("Success!", "Submitted SuccessFull!", "success");
         // this.props.history.push(
@@ -277,9 +302,9 @@ export class EditProductType extends Component {
     }
   };
   onSelect(selectedList, selectedItem) {
-    console.log(selectedList);
-
-    console.log(selectedList.length);
+    // console.log(selectedList);
+    // /
+    // console.log(selectedList.length);
 
     if (selectedList.length) {
       for (var i = 0; i < selectedList.length; i++) {
@@ -288,8 +313,8 @@ export class EditProductType extends Component {
     }
   }
   onRemove(selectedList, removedItem) {
-    console.log(selectedList);
-    console.log(selectItem1);
+    // console.log(selectedList);
+    // console.log(selectItem1);
   }
 
   render() {
@@ -322,7 +347,8 @@ export class EditProductType extends Component {
             <div className="container ">
               <h4 className="py-2">
                 Selected User Type :-{" "}
-                {this.state.AssignRole === "Client" ? "Client" : "User"}
+                {this.state.AssignRole && this.state.AssignRole}
+                {/* {this.state.AssignRole === "Client" ? "Client" : "User"} */}
               </h4>
               <Row></Row>
             </div>
@@ -364,7 +390,13 @@ export class EditProductType extends Component {
                       <Label>Mobile Number *</Label>
                       <Input
                         required
-                        type="number"
+                        onWheel={(e) => {
+                          e.preventDefault(); // Prevent the mouse wheel scroll event
+                        }}
+                        onFocus={(e) => {
+                          e.preventDefault(); // Prevent the default onFocus behavior
+                        }}
+                        type="text"
                         onKeyDown={(e) =>
                           ["e", "E", "+", "-"].includes(e.key) &&
                           e.preventDefault()
@@ -375,7 +407,13 @@ export class EditProductType extends Component {
                         placeholder="0123456789"
                         name="Mobile_no"
                         value={this.state.Mobile_no}
-                        onChange={this.changeHandler.bind(this)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Use regular expression to allow only numbers
+                          const numericValue = value.replace(/\D/g, "");
+                          this.setState({ Mobile_no: numericValue });
+                        }}
+                        // onChange={this.changeHandler.bind(this)}
                       />
                     </FormGroup>
                   </Col>
@@ -384,7 +422,13 @@ export class EditProductType extends Component {
                       <Label>Phone Number </Label>
                       <Input
                         required
-                        type="number"
+                        onWheel={(e) => {
+                          e.preventDefault(); // Prevent the mouse wheel scroll event
+                        }}
+                        onFocus={(e) => {
+                          e.preventDefault(); // Prevent the default onFocus behavior
+                        }}
+                        type="text"
                         onKeyDown={(e) =>
                           ["e", "E", "+", "-"].includes(e.key) &&
                           e.preventDefault()
@@ -395,7 +439,13 @@ export class EditProductType extends Component {
                         placeholder="0123456789"
                         name="Phone_no"
                         value={this.state.Phone_no}
-                        onChange={this.changeHandler.bind(this)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Use regular expression to allow only numbers
+                          const numericValue = value.replace(/\D/g, "");
+                          this.setState({ Phone_no: numericValue });
+                        }}
+                        // onChange={this.changeHandler.bind(this)}
                       />
                     </FormGroup>
                   </Col>
@@ -454,55 +504,78 @@ export class EditProductType extends Component {
                       />
                     </FormGroup>
                   </Col>
-                  <Col lg="6" md="6">
-                    <FormGroup>
-                      <Label>Place of Supply</Label>
-                      <Input
-                        required
-                        type="text"
-                        placeholder="Enter Place_of_Supply"
-                        name="Place_of_Supply"
-                        value={this.state.Place_of_Supply}
-                        onChange={this.changeHandler}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col lg="6" md="6">
-                    <FormGroup>
-                      <label for="cars">Choose State</label>
-                      <select
-                        name="SelectedState"
-                        value={this.state.SelectedState}
-                        onChange={(e) => {
-                          console.log(e.target.value);
-                          const formdata = new FormData();
-                          this.setState({ SelectedState: e.target.value });
-                          formdata.append("state_id", e.target.value);
-                          axiosConfig
-                            .post(`/getcity`, formdata)
-                            .then((res) => {
-                              this.setState({ SelectedSupplierCity: "" });
-                              this.setState({ selectedValue: "" });
 
-                              this.setState({ CityList: res?.data?.cities });
-                            })
-                            .catch((err) => {
-                              console.log(err);
-                            });
-                        }}
-                        // onChange={this.changeHandler}
-                        className="form-control"
-                      >
-                        <option value="volvo">--Select State--</option>
-                        {this.state.StateList &&
-                          this.state.StateList?.map((ele, i) => (
-                            <option key={i} value={ele?.id}>
-                              {ele?.state_title}
-                            </option>
-                          ))}
-                      </select>
-                    </FormGroup>
-                  </Col>
+                  {this.state.AssignRole == "supplier" ? (
+                    <>
+                      <Col lg="6" md="6">
+                        <FormGroup>
+                          <Label>Place of Supply</Label>
+                          <Input
+                            required
+                            type="text"
+                            placeholder="Enter Place_of_Supply"
+                            name="Place_of_Supply"
+                            value={this.state.Place_of_Supply}
+                            onChange={this.changeHandler}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6" md="6">
+                        <FormGroup>
+                          <label for="cars">Choose State</label>
+
+                          <State
+                            city={this.state.StateList}
+                            selected={this.state.selectedStatelist}
+                            SelectedSupplierCity={this.state.selectedStatelist}
+                            // Received={Received}
+                            sendDataToParent={this.receiveDataFromChildstate}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </>
+                  ) : (
+                    <>
+                      <Col lg="6" md="6">
+                        <FormGroup>
+                          <label for="cars">Choose State</label>
+                          <select
+                            name="SelectedState"
+                            value={this.state.SelectedState}
+                            onChange={(e) => {
+                              // console.log(e.target.value);
+                              const formdata = new FormData();
+                              this.setState({ SelectedState: e.target.value });
+                              formdata.append("state_id", e.target.value);
+                              axiosConfig
+                                .post(`/getcity`, formdata)
+                                .then((res) => {
+                                  this.setState({ SelectedSupplierCity: "" });
+                                  this.setState({ selectedValue: "" });
+
+                                  this.setState({
+                                    CityList: res?.data?.cities,
+                                  });
+                                })
+                                .catch((err) => {
+                                  console.log(err);
+                                });
+                            }}
+                            // onChange={this.changeHandler}
+                            className="form-control"
+                          >
+                            <option value="volvo">--Select State--</option>
+                            {this.state.StateList &&
+                              this.state.StateList?.map((ele, i) => (
+                                <option key={i} value={ele?.id}>
+                                  {ele?.state_title}
+                                </option>
+                              ))}
+                          </select>
+                        </FormGroup>
+                      </Col>
+                    </>
+                  )}
                   <Col lg="6" md="6">
                     <label for="cars">Choose City</label>
                     <EditCity
@@ -551,7 +624,7 @@ export class EditProductType extends Component {
                           name="B_State"
                           value={this.state.B_State}
                           onChange={(e) => {
-                            console.log(e.target.value);
+                            // console.log(e.target.value);
                             this.setState({ B_State: e.target.value });
                             const formdata = new FormData();
                             formdata.append("state_id", e.target.value);
@@ -617,6 +690,12 @@ export class EditProductType extends Component {
                         <Label>PinCode</Label>
                         <Input
                           required
+                          onWheel={(e) => {
+                            e.preventDefault(); // Prevent the mouse wheel scroll event
+                          }}
+                          onFocus={(e) => {
+                            e.preventDefault(); // Prevent the default onFocus behavior
+                          }}
                           type="number"
                           onKeyDown={(e) =>
                             ["e", "E", "+", "-"].includes(e.key) &&
@@ -626,7 +705,13 @@ export class EditProductType extends Component {
                           placeholder="Enter PinCode"
                           name="B_PinCode"
                           value={this.state.B_PinCode}
-                          onChange={this.changeHandler}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Use regular expression to allow only numbers
+                            const numericValue = value.replace(/\D/g, "");
+                            this.setState({ B_PinCode: numericValue });
+                          }}
+                          // onChange={this.changeHandler}
                         />
                       </FormGroup>
                     </Col>
@@ -747,6 +832,12 @@ export class EditProductType extends Component {
                         <Label>PinCode</Label>
                         <Input
                           required
+                          onWheel={(e) => {
+                            e.preventDefault(); // Prevent the mouse wheel scroll event
+                          }}
+                          onFocus={(e) => {
+                            e.preventDefault(); // Prevent the default onFocus behavior
+                          }}
                           disabled={this.state.checkbox ? true : false}
                           type="number"
                           onKeyDown={(e) =>
@@ -757,7 +848,13 @@ export class EditProductType extends Component {
                           placeholder="Enter PinCode"
                           name="S_PinCode"
                           value={this.state.S_PinCode}
-                          onChange={this.changeHandler}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Use regular expression to allow only numbers
+                            const numericValue = value.replace(/\D/g, "");
+                            this.setState({ S_PinCode: numericValue });
+                          }}
+                          // onChange={this.changeHandler}
                         />
                       </FormGroup>
                     </Col>

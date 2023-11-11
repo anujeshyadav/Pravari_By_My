@@ -153,14 +153,14 @@ const navigationConfig = [
         permissions: ["admin", "editor"],
         navLink: "/app/freshlist/house/assigntoclient",
       },
-      {
-        id: "assignedtoclient",
-        title: "Assigned List",
-        type: "item",
-        icon: <FaCircle size={8} />,
-        permissions: ["admin", "editor"],
-        navLink: "/app/freshlist/house/Assignedtoclient",
-      },
+      // {
+      //   id: "assignedtoclient",
+      //   title: "Assigned List",
+      //   type: "item",
+      //   icon: <FaCircle size={8} />,
+      //   permissions: ["admin", "editor"],
+      //   navLink: "/app/freshlist/house/Assignedtoclient",
+      // },
       {
         id: "ratemaster",
         title: "Rate Master",

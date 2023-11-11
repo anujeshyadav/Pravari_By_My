@@ -364,7 +364,10 @@ const CreateAccount = () => {
                     <Label>Mobile Number *</Label>
                     <Input
                       required
-                      type="number"
+                      onWheel={(e) => {
+                        e.preventDefault(); // Prevent the mouse wheel scroll event
+                      }}
+                      type="text"
                       maxLength={12}
                       onKeyDown={(e) =>
                         ["e", "E", "+", "-"].includes(e.key) &&
@@ -375,7 +378,14 @@ const CreateAccount = () => {
                       placeholder="0123456789"
                       name="Mobile_no"
                       value={Mobile_no}
-                      onChange={(e) => setMobile_no(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+
+                        setMobile_no(numericValue);
+                      }}
+                      // onChange={(e) => setMobile_no(e.target.value)}
                     />
                   </FormGroup>
                 </Col>
@@ -424,7 +434,10 @@ const CreateAccount = () => {
                     <Label>Phone Number </Label>
                     <Input
                       required
-                      type="number"
+                      onWheel={(e) => {
+                        e.preventDefault(); // Prevent the mouse wheel scroll event
+                      }}
+                      type="text"
                       onKeyDown={(e) =>
                         ["e", "E", "+", "-"].includes(e.key) &&
                         e.preventDefault()
@@ -435,7 +448,14 @@ const CreateAccount = () => {
                       placeholder="0123456789"
                       name="Phone_no"
                       value={Phone_no}
-                      onChange={(e) => setPhone_no(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+
+                        setPhone_no(numericValue);
+                      }}
+                      // onChange={(e) => setPhone_no(e.target.value)}
                     />
                   </FormGroup>
                 </Col>
@@ -643,7 +663,10 @@ const CreateAccount = () => {
                       <Label>PinCode</Label>
                       <Input
                         required
-                        type="number"
+                        onWheel={(e) => {
+                          e.preventDefault(); // Prevent the mouse wheel scroll event
+                        }}
+                        type="text"
                         onKeyDown={(e) =>
                           ["e", "E", "+", "-"].includes(e.key) &&
                           e.preventDefault()
@@ -652,7 +675,14 @@ const CreateAccount = () => {
                         placeholder="Enter PinCode"
                         name="B_PinCode"
                         value={B_PinCode}
-                        onChange={(e) => setB_PinCode(e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Use regular expression to allow only numbers
+                          const numericValue = value.replace(/\D/g, "");
+
+                          setB_PinCode(numericValue);
+                        }}
+                        // onChange={(e) => setB_PinCode(e.target.value)}
                       />
                     </FormGroup>
                   </Col>
@@ -798,8 +828,14 @@ const CreateAccount = () => {
                       <Label>PinCode</Label>
                       <Input
                         required
+                        onWheel={(e) => {
+                          e.preventDefault(); // Prevent the mouse wheel scroll event
+                        }}
+                        onFocus={(e) => {
+                          e.preventDefault(); // Prevent the default onFocus behavior
+                        }}
                         disabled={checkbox ? true : false}
-                        type="number"
+                        type="text"
                         placeholder="Enter PinCode"
                         onKeyDown={(e) =>
                           ["e", "E", "+", "-"].includes(e.key) &&
@@ -808,7 +844,14 @@ const CreateAccount = () => {
                         min={0}
                         name="S_PinCode"
                         value={S_PinCode}
-                        onChange={(e) => setS_PinCode(e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Use regular expression to allow only numbers
+                          const numericValue = value.replace(/\D/g, "");
+
+                          setS_PinCode(numericValue);
+                        }}
+                        // onChange={(e) => setS_PinCode(e.target.value)}
                       />
                     </FormGroup>
                   </Col>

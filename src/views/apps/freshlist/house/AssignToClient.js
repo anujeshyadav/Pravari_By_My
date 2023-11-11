@@ -860,6 +860,7 @@ const AssignToClient = () => {
         console.log(res.data);
         if (res.data?.success) {
           swal("Product Assigned Successfully");
+          window.location.reload();
           setProduct("");
           setClientname("");
         }

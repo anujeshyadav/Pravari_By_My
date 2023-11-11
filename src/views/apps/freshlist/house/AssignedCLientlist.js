@@ -131,7 +131,7 @@ class AssignedCLientlist extends React.Component {
           headerName: "Products",
           field: "products",
           filter: "agSetColumnFilter",
-          width: 200,
+          width: 500,
           cellRendererFramework: (params) => {
             return (
               <div className="d-flex flex-wrap">
