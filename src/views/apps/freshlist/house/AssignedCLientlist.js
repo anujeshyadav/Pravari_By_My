@@ -30,7 +30,7 @@ import "../../../../assets/scss/pages/users.scss";
 import { FaWallet, Facart, FaCartArrowDown, FaBoxOpen } from "react-icons/fa";
 import "moment-timezone";
 import { Route } from "react-router-dom";
-import { timers } from "jquery";
+// import { timers } from "jquery";
 import swal from "sweetalert";
 
 class AssignedCLientlist extends React.Component {
@@ -100,68 +100,98 @@ class AssignedCLientlist extends React.Component {
           // },
         },
 
-        // {
-        //   headerName: "PRODUCT Image",
-        //   field: "product",
-        //   filter: "agSetColumnFilter",
-        //   width: 150,
-        //   cellRendererFramework: (params) => {
-        //     // console.log(params.data);
-        //     return (
-        //       <div className="d-flex align-items-center cursor-pointer">
-        //         <div className="">
-        //           {/* <span>{params.data?.title}</span> */}
-        //           {params?.data?.product_images ? (
-        //             <img
-        //               style={{ borderRadius: "12px" }}
-        //               width="60px"
-        //               height="40px"
-        //               src={params?.data?.product_images[0]}
-        //               alt="image"
-        //             />
-        //           ) : (
-        //             "No Image "
-        //           )}
-        //         </div>
-        //       </div>
-        //     );
-        //   },
-        // },
         {
-          headerName: "Products",
-          field: "products",
+          headerName: "PRODUCT Image",
+          field: "product_images",
           filter: "agSetColumnFilter",
-          width: 500,
+          width: 200,
           cellRendererFramework: (params) => {
+            // console.log(params.data);
             return (
-              <div className="d-flex flex-wrap">
-                {params?.data?.products &&
-                  params?.data?.products?.map((ele, i) => {
-                    if (params.data?.products.length > 1) {
-                      return <span key={i}>{ele?.title}, &nbsp;</span>;
-                    } else {
-                      return <span key={i}>{ele?.title}</span>;
-                    }
-                  })}
+              <div className="d-flex align-items-center cursor-pointer">
+                <div className="">
+                  {/* <span>{params.data?.title}</span> */}
+                  {params?.data?.product_images ? (
+                    <img
+                      style={{ borderRadius: "12px" }}
+                      width="60px"
+                      height="40px"
+                      src={params?.data?.product_images[0]}
+                      alt="image"
+                    />
+                  ) : (
+                    "No Image "
+                  )}
+                </div>
               </div>
             );
           },
         },
         // {
-        //   headerName: "product_type",
-        //   field: "product_type",
+        //   headerName: "Products",
+        //   field: "products",
         //   filter: "agSetColumnFilter",
-        //   width: 150,
+        //   width: 500,
         //   cellRendererFramework: (params) => {
         //     return (
-        //       <div className="d-flex align-items-center cursor-pointer">
-        //         <div className="">
-        //           <span>{params.data?.product_type}</span>
-        //         </div>
+        //       <div className="d-flex flex-wrap">
+        //         {params?.data?.products &&
+        //           params?.data?.products?.map((ele, i) => {
+        //             if (params.data?.products.length > 1) {
+        //               return <span key={i}>{ele?.title}, &nbsp;</span>;
+        //             } else {
+        //               return <span key={i}>{ele?.title}</span>;
+        //             }
+        //           })}
         //       </div>
         //     );
         //   },
         // },
+        {
+          headerName: "Product Name",
+          field: "title",
+          filter: "agSetColumnFilter",
+          width: 200,
+          cellRendererFramework: (params) => {
+            return (
+              <div className="d-flex align-items-center cursor-pointer">
+                <div className="">
+                  <span>{params.data?.title}</span>
+                </div>
+              </div>
+            );
+          },
+        },
+        {
+          headerName: "Assign To",
+          field: "assign_full_name",
+          filter: "agSetColumnFilter",
+          width: 150,
+          cellRendererFramework: (params) => {
+            return (
+              <div className="d-flex align-items-center cursor-pointer">
+                <div className="">
+                  <span>{params.data?.assign_full_name}</span>
+                </div>
+              </div>
+            );
+          },
+        },
+        {
+          headerName: "Assigned By",
+          field: "user_full_name",
+          filter: "agSetColumnFilter",
+          width: 180,
+          cellRendererFramework: (params) => {
+            return (
+              <div className="d-flex align-items-center cursor-pointer">
+                <div className="">
+                  <span>{params.data?.user_full_name}</span>
+                </div>
+              </div>
+            );
+          },
+        },
         // {
         //   headerName: "Product",
         //   field: "title",
@@ -177,21 +207,21 @@ class AssignedCLientlist extends React.Component {
         //     );
         //   },
         // },
-        {
-          headerName: "Assigned User",
-          field: "qty",
-          filter: "agSetColumnFilter",
-          width: 180,
-          cellRendererFramework: (params) => {
-            return (
-              <div className="d-flex align-items-center cursor-pointer">
-                <div className="">
-                  <span>{params?.data?.assign_full_name}</span>
-                </div>
-              </div>
-            );
-          },
-        },
+        // {
+        //   headerName: "Assigned User",
+        //   field: "qty",
+        //   filter: "agSetColumnFilter",
+        //   width: 180,
+        //   cellRendererFramework: (params) => {
+        //     return (
+        //       <div className="d-flex align-items-center cursor-pointer">
+        //         <div className="">
+        //           <span>{params?.data?.assign_full_name}</span>
+        //         </div>
+        //       </div>
+        //     );
+        //   },
+        // },
         // {
         //   headerName: "CATEGORY",
         //   field: "category_name",
@@ -348,7 +378,7 @@ class AssignedCLientlist extends React.Component {
         {
           headerName: "Actions",
           field: "transactions",
-          width: 150,
+          width: 180,
           cellRendererFramework: (params) => {
             return (
               <div className="actions cursor-pointer">
@@ -383,7 +413,10 @@ class AssignedCLientlist extends React.Component {
                     size="25px"
                     color="Red"
                     onClick={() => {
-                      this.runthisfunction(params?.data?.cart_id);
+                      this.runthisfunction(
+                        params?.data?.assign_user_id,
+                        params?.data?.product_id
+                      );
                     }}
                   />
                 )}
@@ -437,47 +470,69 @@ class AssignedCLientlist extends React.Component {
       .post(`/getUserAssignproductList`, formdata)
       .then((res) => {
         console.log(res?.data?.data);
-        this.setState({ rowData: res?.data?.data });
+        let totalprodut = [];
+        if (res?.data.data.length) {
+          res?.data?.data?.map((ele, i) => {
+            console.log(ele?.products);
+            totalprodut.push(ele?.products);
+          });
+          console.log(totalprodut.flat());
+          this.setState({ rowData: totalprodut.flat() });
+        }
       })
       .catch((err) => {
+        // debugger;
         console.log(err.response);
       });
   }
 
-  async runthisfunction(id) {
+  async runthisfunction(id, pid) {
+    let selectedData = this.gridApi.getSelectedRows();
     let pageparmission = JSON.parse(localStorage.getItem("userData"));
 
-    console.log(id);
-    let data = new FormData();
-    data.append("user_id", pageparmission?.Userinfo?.id);
-    data.append("cart_id", id);
+    swal("Warning", "Sure You Want to Delete it", {
+      buttons: {
+        cancel: "cancel",
+        catch: { text: "Delete ", value: "delete" },
+      },
+    }).then((value) => {
+      switch (value) {
+        case "delete":
+          // this.gridApi.updateRowData({ remove: selectedData });
+          const data = new FormData();
+          data.append("user_id", pageparmission?.Userinfo?.id);
+          data.append("assign_user_id", id);
+          data.append("product_id", pid);
 
-    await axiosConfig
-      .post("/deleteitemcart", data)
-      .then((resp) => {
-        console.log(resp.data);
-        let selectedData = this.gridApi.getSelectedRows();
-        this.gridApi.updateRowData({ remove: selectedData });
-        if (resp?.data?.success) {
-          toast.success(`Product Deleted`);
-          //   this.handleviewcart();
-          // swal("Deleted Successfully");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        let msg = resp?.data?.success;
-        if (!msg) {
-          //   this.handleviewcart();
-          swal("something went wrong");
-        }
-        this.componentDidMount();
-      });
+          axiosConfig
+            .post("/deleteUserAssignproductList", data)
+            .then((resp) => {
+              // console.log(resp.data);
+              this.gridApi.updateRowData({ remove: selectedData });
+              this.componentDidMount();
+              if (resp?.data?.success) {
+                toast.success(`Product Deleted Successfully`);
+                //   this.handleviewcart();
+                // swal("Deleted Successfully");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              let msg = resp?.data?.success;
+              if (!msg) {
+                //   this.handleviewcart();
+                swal("something went wrong");
+              }
+            });
+
+          break;
+        default:
+      }
+    });
   }
 
   onGridReady = (params) => {
     this.gridApi = params.api;
-    // console.log(params.api);
     this.gridColumnApi = params.columnApi;
     this.setState({
       currenPageSize: this.gridApi.paginationGetCurrentPage() + 1,

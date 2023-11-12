@@ -366,16 +366,39 @@ class ProductDashboard extends React.Component {
     const formdata = new FormData();
     formdata.append("user_id", pageparmission?.Userinfo?.id);
     formdata.append("role", pageparmission?.Userinfo?.role);
+    if (pageparmission?.Userinfo?.role == "User") {
+      await axiosConfig
+        .post("/getUserAssignproductList", formdata)
+        .then((response) => {
+          let totalprodut = [];
+          if (response?.data.data.length) {
+            response?.data?.data?.map((ele, i) => {
+              console.log(ele?.products);
+              totalprodut.push(ele?.products);
+            });
+            console.log(totalprodut.flat());
+            this.setState({ rowData: totalprodut.flat() });
+          }
+          // this.setState({ rowData: response.data.data });
+          // console.log(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    } else {
+      await axiosConfig
+        .post("/productlistapi", formdata)
+        .then((response) => {
+          console.log(response.data.data);
 
-    await axiosConfig
-      .post("/productlistapi", formdata)
-      .then((response) => {
-        this.setState({ rowData: response.data.data });
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+          this.setState({ rowData: response.data.data });
+          // console.log(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    }
+
     // await axiosConfig.get("/gettermsconditions").then(response => {
     //   let rowData = response.data.data;
     //   this.setState({ rowData });

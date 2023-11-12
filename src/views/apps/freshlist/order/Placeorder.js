@@ -283,6 +283,8 @@ class Placeorder extends React.Component {
       // .post("/productlistapi", formdata)
       .post("/getUserAssignproductList", formdata)
       .then((response) => {
+        console.log(response);
+        // debugger;
         console.log(response?.data.data[0].products);
         this.setState({ rowData: response?.data.data[0].products });
         // console.log(response.data.data);
@@ -299,13 +301,13 @@ class Placeorder extends React.Component {
   }
   handleAddToCart = (e, data) => {
     e.preventDefault();
-    let value = document.getElementById("inputvalue").value;
+    // let value = document.getElementById("inputvalue").value;
 
     let pageparmission = JSON.parse(localStorage.getItem("userData"));
     const formdata = new FormData();
     formdata.append("qty", this.state.ProductQuantity);
     formdata.append("user_id", pageparmission?.Userinfo?.id);
-    formdata.append("product_id", data?.id);
+    formdata.append("product_id", data?.product_id);
     formdata.append("price", data?.price);
     if (this.state.ProductQuantity > 0) {
       axiosConfig
@@ -314,7 +316,7 @@ class Placeorder extends React.Component {
           this.setState({ ProductQuantity: "" });
           this.setState({ rowData: this.state.rowData });
           toast.success(`${this.state.ProductQuantity} Product Added`);
-          let newvalue = (document.getElementById("inputvalue").value = 0);
+          // let newvalue = (document.getElementById("inputvalue").value = 0);
           axiosConfig
             .post(`/viewcart`, formdata)
             .then((res) => {
@@ -334,7 +336,7 @@ class Placeorder extends React.Component {
   };
 
   async runthisfunction(id) {
-    console.log(id);
+    // console.log(id);
     let data = new FormData();
     data.append("id", id);
     await axiosConfig
@@ -349,7 +351,6 @@ class Placeorder extends React.Component {
 
   onGridReady = (params) => {
     this.gridApi = params.api;
-    // console.log(params.api);
     this.gridColumnApi = params.columnApi;
     this.setState({
       currenPageSize: this.gridApi.paginationGetCurrentPage() + 1,
