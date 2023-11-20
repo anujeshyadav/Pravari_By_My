@@ -708,7 +708,7 @@ class InvoiceGenerator extends React.Component {
       axiosConfig
         .post(`/createmergebillapi`, formdata)
         .then((res) => {
-          // console.log(res.data?.data?.applied_charges);
+          console.log(res.data?.data);
           this.setState({ Applied_Charges: res.data?.data?.applied_charges });
           // console.log(res.data.data?.items);
           this.setState({ AllbillMerged: res.data.data?.items });
@@ -727,6 +727,7 @@ class InvoiceGenerator extends React.Component {
         })
         .catch((err) => {
           console.log(err);
+          swal("SomeThing went Wrong");
           this.setState({ ButtonText: "Submit" });
         });
     } else {

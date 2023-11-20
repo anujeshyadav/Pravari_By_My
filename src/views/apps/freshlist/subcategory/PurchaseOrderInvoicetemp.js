@@ -342,7 +342,7 @@ const POInVoice = ({ invoiceData, CurrentWords, BilData, tableList }) => {
                       width: "100%",
                     }}
                   >
-                    Client Code : &nbsp; {invoiceData?.supplier_name}
+                    Client Code : &nbsp; {invoiceData?.super_full_name}
                   </Text>
                 </View>
               </View>
@@ -445,7 +445,7 @@ const POInVoice = ({ invoiceData, CurrentWords, BilData, tableList }) => {
                     marginLeft: "5px",
                   }}
                 >
-                  Client Code
+                  Branch Code
                 </Text>
               </View>
               <View

@@ -77,7 +77,7 @@ const POInVoice = ({
 }) => {
   // console.log(tableList);
   // console.log(invoiceData);
-  // console.log(BilData);
+  console.log(BilData);
   // console.log(CurrentWords);
   // console.log(AllCharges);
   const { items, customerName, date, total, place_supply } = invoiceData;
@@ -349,7 +349,8 @@ const POInVoice = ({
                       width: "90%",
                     }}
                   >
-                    Client Code : &nbsp; {invoiceData?.supplier_name}
+                    Client Code : &nbsp;{" "}
+                    {BilData?.AllbillMerged[0]?.super_full_name}
                   </Text>
                 </View>
               </View>
@@ -452,7 +453,7 @@ const POInVoice = ({
                     marginLeft: "5px",
                   }}
                 >
-                  Client Code
+                  Branch Code
                 </Text>
               </View>
               <View
@@ -628,7 +629,7 @@ const POInVoice = ({
                       // marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.supplier_name}
+                    {invoiceData?.display_code}
                   </Text>
                 </View>
                 <View

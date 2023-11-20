@@ -15,7 +15,8 @@ import {
 import axiosConfig from "../../../../axiosConfig";
 import ReactHtmlParser from "react-html-parser";
 import { ContextLayout } from "../../../../utility/context/Layout";
-import { AgGridReact } from "ag-grid-react";
+// import { AgGridReact } from "ag-grid-react";
+import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import { Eye, Trash2, ChevronDown, Edit, CloudLightning } from "react-feather";
 import { ToastContainer, toast } from "react-toastify";
@@ -36,11 +37,13 @@ class Placeorder extends React.Component {
     ProductQuantity: 0,
     product: [],
     rowData: [],
+    rowData1: [],
     Typelist: [],
     SelectedProduct: [],
     Type: "",
     productlength: "",
     Addedbtn: false,
+    show: false,
     Viewpermisson: null,
     Editpermisson: null,
     Createpermisson: null,
@@ -140,9 +143,7 @@ class Placeorder extends React.Component {
         field: "",
         filter: "agSetColumnFilter",
         width: 260,
-        // cellEditorParams: {
-        //   value: this.state.ProductQuantity, // Pass the initial value
-        // },
+
         cellRendererFramework: (params) => {
           console.log(params);
           return (
@@ -180,6 +181,14 @@ class Placeorder extends React.Component {
           );
         },
       },
+      // {
+      //   headerName: "Value",
+      //   field: "value",
+      //   cellRendererFramework: CustomInputRenderer,
+      //   cellRendererParams: {
+      //     onValueChange: this.handleChange,
+      //   },
+      // },
       {
         headerName: "PRICE",
         field: "price",
@@ -287,6 +296,7 @@ class Placeorder extends React.Component {
         // debugger;
         console.log(response?.data.data[0].products);
         this.setState({ rowData: response?.data.data[0].products });
+        this.setState({ rowData1: response?.data.data[0].products });
         // console.log(response.data.data);
       })
       .catch((error) => {
@@ -299,9 +309,10 @@ class Placeorder extends React.Component {
       this.setState({ Typelist });
     });
   }
+
   handleAddToCart = (e, data) => {
     e.preventDefault();
-    // let value = document.getElementById("inputvalue").value;
+    let value = document.getElementById("inputvalue").value;
 
     let pageparmission = JSON.parse(localStorage.getItem("userData"));
     const formdata = new FormData();
@@ -314,9 +325,11 @@ class Placeorder extends React.Component {
         .post(`/add_to_cart`, formdata)
         .then((res) => {
           this.setState({ ProductQuantity: "" });
+
           this.setState({ rowData: this.state.rowData });
+
+          let newvalue = (document.getElementById("inputvalue").value = 0);
           toast.success(`${this.state.ProductQuantity} Product Added`);
-          // let newvalue = (document.getElementById("inputvalue").value = 0);
           axiosConfig
             .post(`/viewcart`, formdata)
             .then((res) => {
@@ -362,7 +375,13 @@ class Placeorder extends React.Component {
   updateSearchQuery = (val) => {
     this.gridApi.setQuickFilter(val);
   };
+  handleChange = (id, newValue) => {
+    const updatedRowData = this.state.rowData.map((item) =>
+      item.id === id ? { ...item, value: newValue } : item
+    );
 
+    this.setState({ rowData: updatedRowData });
+  };
   filterSize = (val) => {
     if (this.gridApi) {
       this.gridApi.paginationSetPageSize(Number(val));
@@ -373,7 +392,7 @@ class Placeorder extends React.Component {
     }
   };
   render() {
-    const { rowData, columnDefs, defaultColDef } = this.state;
+    const { rowData, rowData1, columnDefs, defaultColDef, show } = this.state;
     return (
       <>
         <ToastContainer />
@@ -397,7 +416,7 @@ class Placeorder extends React.Component {
                       <Route
                         render={({ history }) => (
                           <Button
-                            className="float-right mt-1 mx-2"
+                            className="float-right mt-2 mx-2"
                             color="primary"
                             // size="sm"
                             onClick={() => {
@@ -421,7 +440,7 @@ class Placeorder extends React.Component {
                   <Route
                     render={({ history }) => (
                       <Button
-                        className="float-right mt-1 "
+                        className="float-right mt-2 "
                         color="primary"
                         onClick={() => history.push("/app/freshlist/order/all")}
                       >
@@ -430,134 +449,172 @@ class Placeorder extends React.Component {
                     )}
                   />
                 </Col>
-              </Row>
-              <CardBody>
-                {this.state.rowData === null ? null : (
-                  <div className="ag-theme-material w-100 my-2 ag-grid-table">
-                    <div className="d-flex flex-wrap justify-content-between align-items-center">
-                      <div className="mb-1">
-                        <UncontrolledDropdown className="p-1 ag-dropdown">
-                          <DropdownToggle tag="div">
-                            {this.gridApi
-                              ? this.state.currenPageSize
-                              : "" * this.state.getPageSize -
-                                (this.state.getPageSize - 1)}{" "}
-                            -{" "}
-                            {this.state.rowData.length -
-                              this.state.currenPageSize *
-                                this.state.getPageSize >
-                            0
-                              ? this.state.currenPageSize *
-                                this.state.getPageSize
-                              : this.state.rowData.length}{" "}
-                            of {this.state.rowData.length}
-                            <ChevronDown className="ml-50" size={15} />
-                          </DropdownToggle>
-                          <DropdownMenu right>
-                            <DropdownItem
-                              tag="div"
-                              onClick={() => this.filterSize(5)}
-                            >
-                              5
-                            </DropdownItem>
-                            <DropdownItem
-                              tag="div"
-                              onClick={() => this.filterSize(20)}
-                            >
-                              20
-                            </DropdownItem>
-                            <DropdownItem
-                              tag="div"
-                              onClick={() => this.filterSize(50)}
-                            >
-                              50
-                            </DropdownItem>
-                            <DropdownItem
-                              tag="div"
-                              onClick={() => this.filterSize(100)}
-                            >
-                              100
-                            </DropdownItem>
-                            <DropdownItem
-                              tag="div"
-                              onClick={() => this.filterSize(134)}
-                            >
-                              134
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                      <div className="d-flex flex-wrap justify-content-between mb-1">
-                        <div className=" mr-1">
-                          <FormGroup>
-                            <label className=""> Choose Type *</label>
-                          </FormGroup>
-                        </div>
-                        <div className=" mr-1">
-                          <FormGroup>
-                            <select
-                              onChange={(e) => {
-                                this.setState({ Type: e.target.value });
-                                this.updateSearchQuery(e.target.value);
-                              }}
-                              className="form-control"
-                              name="Select"
-                              id="Select"
-                            >
-                              <option value="">--Select Type--</option>
-                              {this.state.Typelist &&
-                                this.state.Typelist?.map((val, i) => (
-                                  <option key={i} value={val?.product_type}>
-                                    {val?.product_type}
-                                  </option>
-                                ))}
-                            </select>
-                          </FormGroup>
-                        </div>
-                        <div className="table-input mr-1">
-                          <Input
-                            placeholder="search..."
-                            onChange={(e) =>
-                              this.updateSearchQuery(e.target.value)
-                            }
-                            value={this.state.value}
-                          />
-                        </div>
-                        <div className="export-btn">
-                          <Button.Ripple
-                            color="primary"
-                            onClick={() => this.gridApi.exportDataAsCsv()}
-                          >
-                            Export as CSV
-                          </Button.Ripple>
-                        </div>
-                      </div>
-                    </div>
-                    <ContextLayout.Consumer>
-                      {(context) => (
-                        <AgGridReact
-                          gridOptions={{}}
-                          rowSelection="multiple"
-                          defaultColDef={defaultColDef}
-                          columnDefs={columnDefs}
-                          rowData={rowData}
-                          onGridReady={this.onGridReady}
-                          colResizeDefault={"shift"}
-                          animateRows={true}
-                          floatingFilter={false}
-                          pagination={true}
-                          paginationPageSize={this.state.paginationPageSize}
-                          pivotPanelShow="always"
-                          enableRtl={context.state.direction === "rtl"}
-                        />
-                      )}
-                    </ContextLayout.Consumer>
+                <Col lg="3" md="3" sm="6" xs="12">
+                  <div className=" mr-1">
+                    <FormGroup>
+                      <label className=""> Choose Type *</label>
+                      <select
+                        onChange={(e) => {
+                          console.log(rowData);
+                          let mydata = rowData1?.filter(
+                            (ele, i) => ele?.product_type == e.target.value
+                          );
+                          this.setState({ rowData: mydata });
+                          if (e.target.value == "NA") {
+                            this.setState({ show: false });
+                          } else {
+                            this.setState({ show: true });
+                          }
+                          this.setState({ Type: e.target.value });
+                        }}
+                        className="form-control"
+                        name="Select"
+                        id="Select"
+                        value={this.state.Type}
+                      >
+                        <option value="NA">--Select Type--</option>
+                        {this.state.Typelist &&
+                          this.state.Typelist?.map((val, i) => (
+                            <option key={i} value={val?.product_type}>
+                              {val?.product_type}
+                            </option>
+                          ))}
+                      </select>
+                    </FormGroup>
                   </div>
-                )}
-              </CardBody>
+                </Col>
+              </Row>
+              {show ? (
+                <>
+                  <CardBody>
+                    {this.state.rowData === null ? null : (
+                      <div className="ag-theme-material w-100 my-2 ag-grid-table">
+                        <div className="d-flex flex-wrap justify-content-between align-items-center">
+                          <div className="mb-1">
+                            <UncontrolledDropdown className="p-1 ag-dropdown">
+                              <DropdownToggle tag="div">
+                                {this.gridApi
+                                  ? this.state.currenPageSize
+                                  : "" * this.state.getPageSize -
+                                    (this.state.getPageSize - 1)}{" "}
+                                -{" "}
+                                {this.state.rowData.length -
+                                  this.state.currenPageSize *
+                                    this.state.getPageSize >
+                                0
+                                  ? this.state.currenPageSize *
+                                    this.state.getPageSize
+                                  : this.state.rowData.length}{" "}
+                                of {this.state.rowData.length}
+                                <ChevronDown className="ml-50" size={15} />
+                              </DropdownToggle>
+                              <DropdownMenu right>
+                                <DropdownItem
+                                  tag="div"
+                                  onClick={() => this.filterSize(20)}
+                                >
+                                  20
+                                </DropdownItem>
+                                <DropdownItem
+                                  tag="div"
+                                  onClick={() => this.filterSize(50)}
+                                >
+                                  50
+                                </DropdownItem>
+                                <DropdownItem
+                                  tag="div"
+                                  onClick={() => this.filterSize(100)}
+                                >
+                                  100
+                                </DropdownItem>
+                                <DropdownItem
+                                  tag="div"
+                                  onClick={() => this.filterSize(134)}
+                                >
+                                  134
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </div>
+                          <div className="d-flex flex-wrap justify-content-between mb-1">
+                            <div className="table-input mr-1">
+                              <Input
+                                placeholder="search..."
+                                onChange={(e) =>
+                                  this.updateSearchQuery(e.target.value)
+                                }
+                                value={this.state.value}
+                              />
+                            </div>
+                            <div className="export-btn">
+                              <Button.Ripple
+                                color="primary"
+                                onClick={() => this.gridApi.exportDataAsCsv()}
+                              >
+                                Export as CSV
+                              </Button.Ripple>
+                            </div>
+                          </div>
+                        </div>
+                        <ContextLayout.Consumer>
+                          {(context) => (
+                            <AgGridReact
+                              gridOptions={{}}
+                              rowSelection="multiple"
+                              defaultColDef={defaultColDef}
+                              columnDefs={columnDefs}
+                              rowData={rowData}
+                              onGridReady={this.onGridReady}
+                              colResizeDefault={"shift"}
+                              animateRows={true}
+                              floatingFilter={false}
+                              pagination={true}
+                              paginationPageSize={this.state.paginationPageSize}
+                              pivotPanelShow="always"
+                              enableRtl={context.state.direction === "rtl"}
+                            />
+                          )}
+                        </ContextLayout.Consumer>
+                      </div>
+                    )}
+                  </CardBody>
+                </>
+              ) : null}
             </Card>
           </Col>
         </Row>
+      </>
+    );
+  }
+}
+class CustomInputRenderer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: props.value,
+    };
+  }
+
+  handleChange = (e) => {
+    const newValue = e.target.value;
+    this.setState({ value: newValue });
+
+    // If you want to update the state in the parent component, you can pass a callback function as a prop and call it here.
+    this.props.api.setValue(newValue); // Update the value directly in the grid
+    this.props.onValueChange(this.props.data.id, newValue);
+  };
+
+  render() {
+    return (
+      <>
+        <input
+          type="number"
+          value={this.state.value}
+          onChange={this.handleChange}
+        />
+        <Button onClick={this.handleclick} color="primary">
+          add
+        </Button>
       </>
     );
   }
