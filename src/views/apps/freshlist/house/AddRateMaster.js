@@ -246,12 +246,17 @@ export class AddRateMaster extends Component {
                     <Label> PRICE (₹)</Label>
                     <Input
                       required
-                      type="number"
+                      type="text"
                       placeholder="Amount In Number"
                       name="Price"
                       bsSize="lg"
                       value={this.state.Price}
-                      onChange={this.changeHandler}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+                        this.setState({ Price: numericValue });
+                      }}
                     />
                   </FormGroup>
                 </Col>

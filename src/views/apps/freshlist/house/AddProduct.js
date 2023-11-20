@@ -336,12 +336,17 @@ export class AddProduct extends Component {
                         e.preventDefault()
                       }
                       min={0}
-                      type="number"
+                      type="text"
                       placeholder="Amount In Number"
                       name="Price"
                       bsSize="lg"
                       value={this.state.Price}
-                      onChange={this.changeHandler}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+                        this.setState({ Price: numericValue });
+                      }}
                     />
                   </FormGroup>
                 </Col>
@@ -462,12 +467,17 @@ export class AddProduct extends Component {
                         e.preventDefault()
                       }
                       min={0}
-                      type="number"
+                      type="text"
                       placeholder="Discount Price"
                       name="DiscountPrice"
                       bsSize="lg"
                       value={this.state.DiscountPrice}
-                      onChange={this.changeHandler}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+                        this.setState({ DiscountPrice: numericValue });
+                      }}
                     />
                   </FormGroup>
                 </Col>
@@ -480,12 +490,17 @@ export class AddProduct extends Component {
                         e.preventDefault()
                       }
                       min={0}
-                      type="number"
+                      type="text"
                       placeholder="Number..."
                       name="shipmentfee"
                       bsSize="lg"
                       value={this.state.shipmentfee}
-                      onChange={this.changeHandler}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+                        this.setState({ shipmentfee: numericValue });
+                      }}
                     />
                   </FormGroup>
                 </Col>
@@ -493,17 +508,25 @@ export class AddProduct extends Component {
                   <FormGroup>
                     <Label>TAX RATE (%)</Label>
                     <Input
+                      onWheel={(e) => {
+                        e.preventDefault(); // Prevent the mouse wheel scroll event
+                      }}
                       onKeyDown={(e) =>
                         ["e", "E", "+", "-"].includes(e.key) &&
                         e.preventDefault()
                       }
                       min={0}
-                      type="number"
+                      type="text"
                       placeholder="Tax in Percentage"
                       name="taxrate"
                       bsSize="lg"
                       value={this.state.taxrate}
-                      onChange={this.changeHandler}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Use regular expression to allow only numbers
+                        const numericValue = value.replace(/\D/g, "");
+                        this.setState({ taxrate: numericValue });
+                      }}
                     />
                   </FormGroup>
                 </Col>

@@ -76,7 +76,7 @@ const InvoiceRegeTemp = ({
   AllCharges,
 }) => {
   // console.log(tableList);
-  // console.log(invoiceData);
+  console.log(invoiceData);
   // console.log(BilData);
   // console.log(CurrentWords);
   // console.log(AllCharges);
@@ -353,7 +353,7 @@ const InvoiceRegeTemp = ({
                       width: "90%",
                     }}
                   >
-                    Client Code : &nbsp; {invoiceData?.supplier_name}
+                    Client Code : &nbsp; {invoiceData?.super_full_name}
                   </Text>
                 </View>
               </View>
@@ -456,7 +456,7 @@ const InvoiceRegeTemp = ({
                     marginLeft: "5px",
                   }}
                 >
-                  Client Code
+                  Branch Code
                 </Text>
               </View>
               <View
@@ -632,7 +632,7 @@ const InvoiceRegeTemp = ({
                       // marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.supplier_name}
+                    {invoiceData?.display_code}
                   </Text>
                 </View>
                 <View
