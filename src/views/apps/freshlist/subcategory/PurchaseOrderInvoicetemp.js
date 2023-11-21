@@ -621,7 +621,7 @@ const POInVoice = ({ invoiceData, CurrentWords, BilData, tableList }) => {
                       // marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.supplier_name}
+                    {invoiceData?.display_code}
                   </Text>
                 </View>
                 <View

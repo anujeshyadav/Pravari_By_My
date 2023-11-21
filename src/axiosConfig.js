@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://sureshzh.beget.tech/pravari/api/ApiCommonController",
+  baseURL: "https://portal.ordermystationery.com/api/ApiCommonController/",
+  // baseURL: "http://sureshzh.beget.tech/pravari/api/ApiCommonController",
 });
 
 export default instance;
