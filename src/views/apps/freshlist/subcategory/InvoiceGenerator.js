@@ -710,7 +710,7 @@ class InvoiceGenerator extends React.Component {
         .then((res) => {
           console.log(res.data?.data);
           this.setState({ Applied_Charges: res.data?.data?.applied_charges });
-          // console.log(res.data.data?.items);
+          console.log(res.data.data);
           this.setState({ AllbillMerged: res.data.data?.items });
           this.setState({ ViewBill: true });
 

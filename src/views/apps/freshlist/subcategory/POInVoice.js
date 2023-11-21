@@ -75,8 +75,8 @@ const POInVoice = ({
   tableList,
   AllCharges,
 }) => {
-  // console.log(tableList);
-  // console.log(invoiceData);
+  console.log(tableList);
+  console.log(invoiceData);
   console.log(BilData);
   // console.log(CurrentWords);
   // console.log(AllCharges);
@@ -629,7 +629,7 @@ const POInVoice = ({
                       // marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.display_code}
+                    {ele?.display_code}
                   </Text>
                 </View>
                 <View
@@ -646,7 +646,7 @@ const POInVoice = ({
                       marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.state_title}
+                    {ele?.state_title}
                   </Text>
                 </View>
                 <View
