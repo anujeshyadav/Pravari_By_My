@@ -77,7 +77,7 @@ const InvoiceRegeTemp = ({
 }) => {
   // console.log(tableList);
   console.log(invoiceData);
-  // console.log(BilData);
+  console.log(BilData);
   // console.log(CurrentWords);
   // console.log(AllCharges);
   const { items, customerName, date, total, place_supply } = invoiceData;
@@ -632,7 +632,7 @@ const InvoiceRegeTemp = ({
                       // marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.display_code}
+                    {ele?.user_full_name}
                   </Text>
                 </View>
                 <View
@@ -649,7 +649,7 @@ const InvoiceRegeTemp = ({
                       marginLeft: "5px",
                     }}
                   >
-                    {invoiceData?.state_title}
+                    {ele?.state_title}
                   </Text>
                 </View>
                 <View
